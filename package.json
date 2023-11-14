@@ -1,0 +1,33 @@
+{
+  "name": "city_restaurants",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "nest build",
+    "start:dev": "nest start --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RoslanHristov/city_restaurants.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RoslanHristov/city_restaurants/issues"
+  },
+  "homepage": "https://github.com/RoslanHristov/city_restaurants#readme",
+  "dependencies": {
+    "@nestjs/config": "^3.1.1",
+    "@nestjs/platform-express": "^10.2.8",
+    "@nestjs/typeorm": "^10.0.0",
+    "class-validator": "^0.14.0",
+    "joi": "^17.11.0",
+    "pg": "^8.11.3",
+    "typeorm": "^0.3.17"
+  },
+  "devDependencies": {
+    "@types/node": "^20.9.0"
+  }
+}
