@@ -6,6 +6,7 @@ services:
       - 5000:5000
     depends_on:
       - db
+    command: "npm run start:dev"
   db:
     image: postgres:latest
     environment:
