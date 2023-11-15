@@ -1,23 +1,55 @@
-import { CityEntity } from "src/libs/entities/city.entity";
-import { RestaurantEntity } from "src/libs/entities/restaurant.entity";
-import { Injectable } from "@nestjs/common";
+import { City } from "src/libs/entities/city.entity";
+import { Restaurant } from "src/libs/entities/restaurant.entity";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
 @Injectable()
 export class CityService {
   constructor(
-    @InjectRepository(CityEntity)
-    private readonly cityRepository: Repository<CityEntity>,
-    @InjectRepository(RestaurantEntity)
-    private readonly restaurantRepository: Repository<RestaurantEntity>
+    @InjectRepository(City)
+    private readonly cityRepository: Repository<City>,
+    @InjectRepository(Restaurant)
+    private readonly restaurantRepository: Repository<Restaurant>
   ) {}
 
-  async findAll(): Promise<CityEntity[]> {
-    return await this.cityRepository.find();
+  async addCity(newCity): Promise<City> {
+    return await this.cityRepository.save(newCity);
   }
 
-  async addCity(newCity): Promise<CityEntity> {
-    return await this.cityRepository.save(newCity.city);
+  async findAllCities(): Promise<City[]> {
+    const cities = await this.cityRepository.find();
+    if (!cities) {
+      throw new NotFoundException("No cities found");
+    }
+    return cities;
+  }
+
+  async findCityById(id: number): Promise<City> {
+    const city = await this.cityRepository.findOne({ where: { id } });
+    if (!city) {
+      throw new NotFoundException(`City with id ${id} not found`);
+    }
+    return city;
+  }
+
+  async findAllRestaurantsByCityId(id: number): Promise<Restaurant[]> {
+    const restaurants = await this.restaurantRepository.find({
+      where: { city: { id } },
+    });
+    if (!restaurants) {
+      throw new NotFoundException(`No restaurants found in city with id ${id}`);
+    }
+    return restaurants;
+  }
+
+  async findAllCitiesWithRestaurants(): Promise<City[]> {
+    const citiesWithRestarants = await this.cityRepository.find({
+      relations: ["restaurants"],
+    });
+    if (!citiesWithRestarants) {
+      throw new NotFoundException("No restourants found in the given city");
+    }
+    return citiesWithRestarants;
   }
 }

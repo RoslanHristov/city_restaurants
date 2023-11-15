@@ -1,17 +1,20 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } from 'typeorm';
-import { CityEntity } from './city.entity';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, JoinColumn } from 'typeorm';
+import { City } from './city.entity';
 
 @Entity()
-export class RestaurantEntity {
+export class Restaurant {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
   name: string;
 
-  @ManyToOne(() => CityEntity, city => city.restaurants)
-  city: CityEntity;
-  
+  @ManyToOne(() => City, city => city.restaurants)
+  city: City;
+
+  @Column()
+  cityId: number;
+
   @CreateDateColumn()
   createdAt: Date;
 }

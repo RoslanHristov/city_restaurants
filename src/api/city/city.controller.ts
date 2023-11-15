@@ -1,11 +1,21 @@
-import { Controller, Get, Post, Body, Res } from "@nestjs/common";
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Res,
+  Logger,
+  Param,
+} from "@nestjs/common";
 import { CityService } from "./city.service";
 import { CreateCityDto } from "./city.dto";
 import { HttpStatus } from "@nestjs/common/enums";
 import { Response } from "express";
 
-@Controller("cities")
+@Controller("city")
 export class CityController {
+  private readonly logger = new Logger(CityController.name);
+
   constructor(private readonly cityService: CityService) {}
 
   @Post()
@@ -18,7 +28,17 @@ export class CityController {
   }
 
   @Get()
-  findAll(): Promise<any[]> {
-    return this.cityService.findAll();
+  findAllCities(): Promise<any[]> {
+    return this.cityService.findAllCities();
+  }
+
+  @Get(":id")
+  findCityById(@Param("id") id: number): Promise<any> {
+    return this.cityService.findCityById(id);
+  }
+
+  @Get('/restaurants/')
+  findAllCitiesWithRestaurants(): Promise<any[]> {
+    return this.cityService.findAllCitiesWithRestaurants();
   }
 }

@@ -1,16 +1,22 @@
-import { RestaurantEntity } from './restaurant.entity';
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  OneToMany,
+} from "typeorm";
+import { Restaurant } from "./restaurant.entity";
 
 @Entity()
-export class CityEntity {
+export class City {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number; // Using numbers instead of UUID for simplicity
 
   @Column()
   name: string;
 
-  @Column()
-  restaurants: RestaurantEntity;
+  @OneToMany(() => Restaurant, (restaurant) => restaurant.city)
+  restaurants: Restaurant[];
 
   @CreateDateColumn()
   createdAt: Date;
