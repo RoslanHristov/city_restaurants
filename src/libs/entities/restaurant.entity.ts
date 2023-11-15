@@ -1,19 +1,28 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, JoinColumn } from 'typeorm';
-import { City } from './city.entity';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+} from "typeorm";
+import { City } from "./city.entity";
 
 @Entity()
 export class Restaurant {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
 
-  @Column()
+  @Column({ unique: true })
   name: string;
 
-  @ManyToOne(() => City, city => city.restaurants)
+  @ManyToOne(() => City, (city) => city.restaurants)
   city: City;
 
   @Column()
-  cityId: number;
+  cityId: string;
+
+  @Column({ nullable: true })
+  food: string;
 
   @CreateDateColumn()
   createdAt: Date;

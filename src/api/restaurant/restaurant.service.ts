@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import {
+  Injectable,
+  NotFoundException,
+  // ConflictException,
+  BadRequestException,
+} from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { City } from "src/libs/entities/city.entity";
 import { Restaurant } from "src/libs/entities/restaurant.entity";
@@ -15,7 +20,7 @@ export class RestaurantSerivce {
   ) {}
 
   async addRestaurant(restaurantDto: CreateRestaurantDto): Promise<Restaurant> {
-    const { cityId, name } = restaurantDto;
+    const { cityId, name, food } = restaurantDto;
     const city = await this.cityRepository.findOne({ where: { id: cityId } });
 
     if (!city) {
@@ -23,7 +28,54 @@ export class RestaurantSerivce {
         `Could not find city with id ${cityId} to add restaurant to`
       );
     }
+    // Trivial error handling like this is not necessary since im using class-validator in the DTO
+    // if (!name) {
+    //   throw new ConflictException("Restaurant name is required");
+    // }
+    return await this.restaurantRepository.save({ name, cityId, food });
+  }
 
-    return await this.restaurantRepository.save({ name, cityId });
+  async getAllRestaurantsInCity(cityId: string): Promise<Restaurant[]> {
+    try {
+      const allRestaraunts = await this.restaurantRepository.find({
+        where: { cityId },
+      });
+      if (!allRestaraunts) {
+        throw new NotFoundException(
+          `No restaurants found in city with id ${cityId}`
+        );
+      }
+      return allRestaraunts;
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
+  async getAllRestaurants(): Promise<Restaurant[]> {
+    try {
+      const allRestaraunts = await this.restaurantRepository.find();
+      if (!allRestaraunts) {
+        throw new NotFoundException(`No restaurants found`);
+      }
+      return allRestaraunts;
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
+  async getAllRestaurantsInCityByFood(cityId, food): Promise<Restaurant[]> {
+    try {
+      const allRestaraunts = await this.restaurantRepository.find({
+        where: { cityId, food },
+      });
+      if (!allRestaraunts) {
+        throw new NotFoundException(
+          `No restaurants found in city with id ${cityId}`
+        );
+      }
+      return allRestaraunts;
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 }

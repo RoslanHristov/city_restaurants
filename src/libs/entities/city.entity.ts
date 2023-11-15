@@ -9,10 +9,10 @@ import { Restaurant } from "./restaurant.entity";
 
 @Entity()
 export class City {
-  @PrimaryGeneratedColumn()
-  id: number; // Using numbers instead of UUID for simplicity
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
 
-  @Column()
+  @Column({ unique: true })
   name: string;
 
   @OneToMany(() => Restaurant, (restaurant) => restaurant.city)
