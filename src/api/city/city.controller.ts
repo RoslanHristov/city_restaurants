@@ -20,7 +20,7 @@ export class CityController {
   private readonly logger = new Logger(CityController.name);
 
   constructor(private readonly cityService: CityService) {}
-  @Get("/all-city-restaurants")
+  @Get("/all-restaurants")
   findAllCitiesWithRestaurants(): Promise<any[]> {
     return this.cityService.findAllCitiesWithRestaurants();
   }
