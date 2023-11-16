@@ -21,3 +21,18 @@ NOTE: The .env.dev is intentionally committed to the repo for the sake of simpli
 
 Happy hacking! :) 👾🤖
 ```
+
+Restaurant routes: 
+    - {/restaurant, POST} 
+    - {/restaurant/:cityId, GET} 
+    - {/restaurant/:cityId/:food, GET} 
+    - {/restaurant, GET} 
+    - {/restaurant/:id, DELETE}
+
+City routes:
+    - {/city/all-restaurants, GET} 
+    - {/city, POST} 
+    - {/city, GET}
+    - {/city/:id, GET} 
+    - {/city/:id, DELETE} 
+    - {/city/:id, PUT} 

@@ -19,6 +19,11 @@ export class CityService {
     private readonly restaurantRepository: Repository<Restaurant>
   ) {}
 
+  /**
+   * Add new city
+   * @param {CreateCityDto} newCity
+   * @returns {Promise<City>}
+   */
   async addCity(newCity: CreateCityDto): Promise<City> {
     // Trivial error handling like this is not necessary since im using class-validator in the DTO
     // if (!name) {
@@ -27,6 +32,10 @@ export class CityService {
     return await this.cityRepository.save(newCity);
   }
 
+  /**
+   * Returns a list of all cities
+   * @returns {Promise<City[]>}
+   */
   async findAllCities(): Promise<City[]> {
     const cities: City[] = await this.cityRepository.find();
     if (!cities) {

@@ -1,5 +1,13 @@
 import { HttpStatus } from "@nestjs/common/enums";
-import { Controller, Body, Res, Post, Get, Param } from "@nestjs/common";
+import {
+  Controller,
+  Body,
+  Res,
+  Post,
+  Get,
+  Param,
+  Delete,
+} from "@nestjs/common";
 import { RestaurantSerivce } from "./restaurant.service";
 import { CreateRestaurantDto } from "./restaurant.dto";
 import { Response } from "express";
@@ -45,5 +53,16 @@ export class RestaurantController {
   async getAllRestaurants(@Res() res: Response): Promise<void> {
     const restaurants = await this.restaurantService.getAllRestaurants();
     res.status(HttpStatus.OK).json({ restaurants });
+  }
+
+  @Delete("/:id")
+  async deleteRestaurantById(
+    @Param("id") id: string,
+    @Res() res: Response
+  ): Promise<void> {
+    const deletedRestaurant = await this.restaurantService.deleteRestaurantById(
+      id
+    );
+    res.status(HttpStatus.OK).json({ deletedRestaurant });
   }
 }

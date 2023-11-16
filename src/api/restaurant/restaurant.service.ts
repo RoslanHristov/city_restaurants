@@ -19,6 +19,11 @@ export class RestaurantSerivce {
     private readonly restaurantRepository: Repository<Restaurant>
   ) {}
 
+  /**
+   * Add new restaurant to city
+   * @param {CreateRestaurantDto} restaurantDto
+   * @returns {Promise<Restaurant>}
+   */
   async addRestaurant(restaurantDto: CreateRestaurantDto): Promise<Restaurant> {
     const { cityId, name, food } = restaurantDto;
     const city = await this.cityRepository.findOne({ where: { id: cityId } });
@@ -35,6 +40,11 @@ export class RestaurantSerivce {
     return await this.restaurantRepository.save({ name, cityId, food });
   }
 
+  /**
+   * Get all restaurants in city by cityId
+   * @param {strubg} cityId
+   * @returns {Promise<Restaurant[]>}
+   */
   async getAllRestaurantsInCity(cityId: string): Promise<Restaurant[]> {
     try {
       const allRestaraunts = await this.restaurantRepository.find({
@@ -74,6 +84,22 @@ export class RestaurantSerivce {
         );
       }
       return allRestaraunts;
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
+  async deleteRestaurantById(id: string): Promise<void> {
+    try {
+      const deletedRestaurant = await this.restaurantRepository.findOne({
+        where: { id },
+      });
+      if (!deletedRestaurant) {
+        throw new NotFoundException(
+          `Could not find restaurant with id ${id} to delete`
+        );
+      }
+      await this.restaurantRepository.delete({ id });
     } catch (error) {
       throw new BadRequestException(error.message);
     }
