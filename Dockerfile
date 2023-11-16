@@ -6,6 +6,9 @@ WORKDIR /usr/src/app
 # Bundle app source
 COPY . .
 
+# Install NestJS globally
+RUN npm install -g @nestjs/cli
+
 # Install dependencies
 RUN npm install
 

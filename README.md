@@ -1,6 +1,6 @@
 ``` 
 Pre-requisites:
-1. Nodejs/NPM
+1. Nodejs/NPM (v18)
 2. Postgres (you can run it locally or use a docker container)
 3. Docker (optional)
 
