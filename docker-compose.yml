@@ -6,6 +6,8 @@ services:
       dockerfile: Dockerfile
     env_file:
       - .env.dev
+    environment:
+      POSTGRES_HOST: db
     ports:
       - 5000:5000
     depends_on:
@@ -16,6 +18,8 @@ services:
     env_file:
       - .env.dev
     environment:
-      POSTGRES_HOST: pg
+      POSTGRES_HOST: db
+    volumes:
+      - /docker-entrypoint-initdb.d
     ports:
       - 5432:5432
